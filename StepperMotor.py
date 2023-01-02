@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import sys
 import time 
 import RPi.GPIO as GPIO
 from StopMotorInterrupt import *
@@ -23,6 +22,10 @@ class StepperMotor:
         #Signal to stop the motor
         self.stop_motor = False
         
+        #States of the motor
+        self.stopped = True
+        self.moving  = False
+        
         GPIO.setup(self.dir_pin, GPIO.OUT)
         GPIO.setup(self.step_pin, GPIO.OUT)
         
@@ -31,11 +34,18 @@ class StepperMotor:
         #init delay for the motor
         time.sleep(0.5)
         
-    
+    #TODO move is not interrupted by keystrokes
     def move(self, dir, steps, speed):
-        print(f"Moving motor CW: {dir}, steps: {steps}, speed: {speed}")
+        
+        print(f"Trying to move motor CW: {dir}, steps: {steps}, speed: {speed}")
+        
+        if self.is_moving:
+            print("motor still moving, stopping motor for new action")
+            self.stop_motor()
+        
         time.sleep(0.2)
         GPIO.output(self.dir_pin, dir)
+
         
         try:
             
@@ -44,6 +54,7 @@ class StepperMotor:
                 if self.stop_motor:
                     print(f"Stopped at step : {x}")
                     #raise StopMotorInterrupt()
+                    self.stop_motor = False
                     return
                 
                 GPIO.output(self.step_pin, GPIO.HIGH)
@@ -65,6 +76,20 @@ class StepperMotor:
     def stop(self):
         print("Stop motor Class Function...")
         self.stop_motor = True
+        
+        
+    # using property decorator
+    # a getter function     
+    @property
+    def is_moving(self):
+        return self.moving  
+    
+        
+    # using property decorator
+    # a getter function
+    @property
+    def is_stopped(self):
+        return self.stopped    
     
         
     def __repr__(self):
