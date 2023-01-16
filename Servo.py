@@ -16,5 +16,5 @@ class Servo:
     
     #Move servo to the waiting position
     def wait(self) -> None:
-        self.servo.ChangeDutyCycle(angle)
+        self.servo.ChangeDutyCycle(12)
         return
