@@ -16,10 +16,10 @@ class StepperMotor:
                 '1/32': (1, 0, 1)}
     
     
-    def __init__(self):
+    def __init__(self, dir_pin, step_pin):
         
-        self.dir_pin = 22
-        self.step_pin = 23
+        self.dir_pin = dir_pin
+        self.step_pin = step_pin
         self.stop_flag = False
         
         GPIO.setup(self.dir_pin, GPIO.OUT)

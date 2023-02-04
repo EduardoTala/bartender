@@ -23,7 +23,9 @@ SLO_SPEED = 0.01
 stop_motor_event = Event()
 
 #Create a Motor object
-motor = StepperMotor()
+DIR_PIN = 22
+STEP_PIN = 23
+motor = StepperMotor(DIR_PIN, STEP_PIN)
 
 #LIMIT SENSOR CONFIGURATION
 LIMIT_SENSOR_UP = 17  # Limit sensor UP pin
